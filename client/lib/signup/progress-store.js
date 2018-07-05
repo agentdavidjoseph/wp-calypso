@@ -26,8 +26,9 @@ import { getSignupProgress } from 'state/signup/progress/selectors';
 import SignupDependencyStore from './dependency-store';
 
 const SignupProgressStore = {
-	subscribers: new Map(),
 	currentValue: null,
+	reduxStore: null,
+	subscribers: new Map(),
 
 	get() {
 		if ( ! this.reduxStore ) {
