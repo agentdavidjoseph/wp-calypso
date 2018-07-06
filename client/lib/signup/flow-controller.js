@@ -243,12 +243,15 @@ assign( SignupFlowController.prototype, {
 			SignupActions.processSignupStep( step );
 
 			const apiFunction = steps[ step.stepName ].apiRequestFunction;
-			const callback = ( errors, providedDependencies ) => {
-				this._processingSteps.delete( step.stepName );
-				SignupActions.processedSignupStep( step, errors, providedDependencies );
-			};
-
-			apiFunction( callback, dependenciesFound, step, this._reduxStore );
+			apiFunction(
+				( errors, providedDependencies ) => {
+					this._processingSteps.delete( step.stepName );
+					SignupActions.processedSignupStep( step, errors, providedDependencies );
+				},
+				dependenciesFound,
+				step,
+				this._reduxStore
+			);
 		}
 	},
 
