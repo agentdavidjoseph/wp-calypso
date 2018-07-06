@@ -93,6 +93,7 @@ class Signup extends React.Component {
 		super( props, context );
 
 		this.state = {
+			controllerHasReset: false,
 			login: false,
 			dependencies: props.signupDependencies,
 			loadingScreenStartTime: undefined,
@@ -166,7 +167,7 @@ class Signup extends React.Component {
 			this.signupFlowController.changeFlowName( flowName );
 		}
 
-		if ( ! isEqual( this.props.progress, progress ) ) {
+		if ( ! this.state.controllerHasReset && ! isEqual( this.props.progress, progress ) ) {
 			this.updateLoadingScreenStartTime( progress );
 		}
 
@@ -310,12 +311,13 @@ class Signup extends React.Component {
 		debug( `Logging you in to "${ destination }"` );
 
 		this.signupFlowController.reset();
+		this.setState( { controllerHasReset: true } );
 
 		if ( userIsLoggedIn ) {
 			// deferred in case the user is logged in and the redirect triggers a dispatch
 			defer( () => {
 				debug( `Redirecting you to "${ destination }"` );
-				page( destination );
+				window.location.href = destination;
 			} );
 		}
 
